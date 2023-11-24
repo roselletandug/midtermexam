@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="game.css">
+  <title>Number Guessing Game</title>
+</head>
+<body>
+  <section>
+    <div class="form-box">
+      <div class="form-value">
+        <h2>Number Guessing Game</h2>
+        <br>
+        <br>
+        <br>
+        <p>Guess a number between 1 and 10:</p>
+        <div class="inputbox">
+          <input type="number" id="userGuess" placeholder="Enter Your Guess" required>
+        </div>
+        <br>
+        <br>
+        <button type="button" onclick="checkGuess()">Submit Guess</button>
+        <br>
+        <br>
+        <p id="feedback"></p>
+        <br>
+        <br>
+        <p>Chances left: <span id="chances">3</span></p>
+        <br>
+        <br>
+        <img id="resultImage" style="display:none;">
+        <br>
+        <br>
+        <button type="button" id="retryButton" onclick="retryGame()" disabled>Retry</button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Generate a random number between 1 and 10
+    const correctNumber = Math.floor(Math.random() * 10) + 1;
+
+    let remainingChances = 3;
+
+    function checkGuess() {
+      const userGuess = parseInt(document.getElementById("userGuess").value);
+
+
+
+      if (isNaN(userGuess) || userGuess < 1 || userGuess > 10) {
+        alert("Please enter a valid number between 1 and 10.");
+        return;
+      }
+
+
+
+      if (userGuess === correctNumber) {
+        document.getElementById("feedback").innerText = "Congratulations! You guessed the correct number.";
+        document.getElementById("resultImage").src = "right.gif"; // Replace with the correct image URL
+        document.getElementById("resultImage").style.display = "block";
+        disableGame();
+      } else {
+        remainingChances--;
+
+        if (remainingChances === 0) {
+          document.getElementById("feedback").innerText = `Sorry, you're out of chances. The correct number was ${correctNumber}.`;
+          document.getElementById("resultImage").src = "wrong.gif"; // Replace with the wrong image URL
+          document.getElementById("resultImage").style.display = "block";
+          disableGame();
+        } else {
+          document.getElementById("feedback").innerText = userGuess < correctNumber ? "Try a higher number." : "Try a lower number.";
+        }
+      }
+    }
+
+    function disableGame() {
+      document.getElementById("retryButton").disabled = false;
+      document.getElementById("userGuess").disabled = true;
+    }
+
+    function retryGame() {
+      remainingChances = 3;
+      document.getElementById("chances").innerText = remainingChances;
+      document.getElementById("feedback").innerText = "";
+      document.getElementById("resultImage").style.display = "none";
+      document.getElementById("retryButton").disabled = true;
+      document.getElementById("userGuess").disabled = false;
+      document.getElementById("userGuess").value = "";
+    }
+  </script>
+</body>
+</html>
